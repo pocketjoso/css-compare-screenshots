@@ -2,7 +2,7 @@
 import path from 'path'
 import { spawn } from 'child_process'
 
-import prepareCss from './lib/prepareCss'
+import prepareCss from './prepareCss'
 
 import phantomjs from 'phantomjs'
 const phantomJsBinPath = phantomjs.path

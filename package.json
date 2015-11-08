@@ -1,9 +1,10 @@
 {
   "name": "css-compare-screenshots",
-  "version": "0.0.0",
+  "version": "0.0.1",
   "description": "Generates comparision screenshots before/after modifying css. Use for regression testing.",
-  "main": "index.js",
+  "main": "lib/index.js",
   "scripts": {
+    "build": "babel -d lib src/",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "keywords": [
@@ -17,5 +18,8 @@
   "dependencies": {
     "css": "^2.2.1",
     "phantomjs": "~1.9.7"
+  },
+  "devDependencies": {
+    "babel": "^6.0.15"
   }
 }

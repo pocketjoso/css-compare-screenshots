@@ -6,8 +6,8 @@ import prepareCss from './prepareCss'
 
 import phantomjs from 'phantomjs'
 const phantomJsBinPath = phantomjs.path
-const scriptPath = path.join(__dirname, './lib/phantom/script.js')
-const configPath = path.join(__dirname, './lib/phantom/config.json')
+const scriptPath = path.join(__dirname, './phantom/script.js')
+const configPath = path.join(__dirname, './phantom/config.json')
 
 export default function ({ css, url, width, height, dist, fileName }) {
   let configString = '--config=' + configPath
@@ -28,8 +28,6 @@ export default function ({ css, url, width, height, dist, fileName }) {
     fileName,
     externalFontface
   ].concat(cssChunks)
-
-  console.log(scriptArgs)
 
   return new Promise(function (resolve, reject) {
     const cp = spawn(phantomJsBinPath, [configString, scriptPath].concat(scriptArgs))

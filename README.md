@@ -1,5 +1,7 @@
 #CSS before/after comparision screenshots
 
+[![NPM version](https://badge.fury.io/js/css-compare-screenshots.svg)](http://badge.fury.io/js/css-compare-screenshots)
+
 Take before/after screenshots of a web page when updating css, to check for regressions.
 
 Uses `phantomjs` do the page rendering.

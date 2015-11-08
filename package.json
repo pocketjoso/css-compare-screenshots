@@ -1,10 +1,10 @@
 {
   "name": "css-compare-screenshots",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "description": "Generates comparision screenshots before/after modifying css. Use for regression testing.",
   "main": "lib/index.js",
   "scripts": {
-    "build": "babel -d lib src/",
+    "prepublish": "./node_modules/.bin/babel -d lib src/",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "keywords": [

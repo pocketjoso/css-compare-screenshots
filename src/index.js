@@ -44,7 +44,7 @@ export default function ({ css, url, width, height, dist, fileName }) {
     })
 
     cp.on('exit', function (code) {
-      if (code === 1 || stdErr.includes('PhantomJS has crashed')) {
+      if (code === 1 || stdErr.indexOf('PhantomJS has crashed') > -1) {
         let errorMsg = 'Error in generateScreenshots'
         if (stdErr.length > 0) {
           errorMsg += ': ' + stdErr

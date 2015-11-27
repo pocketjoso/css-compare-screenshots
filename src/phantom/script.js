@@ -125,7 +125,7 @@ page.onResourceError = function (resourceError) {
 }
 
 page.onResourceRequested = function (requestData, request) {
-  if (/\.js$/.test(requestData.url)) {
+  if (/\.js(\?.*)?$/.test(requestData.url)) {
     request.abort()
   }
 }

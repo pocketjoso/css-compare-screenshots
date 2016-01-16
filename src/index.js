@@ -31,13 +31,7 @@ export default function ({ css, url, width, height, dist, fileName }) {
 
   return new Promise(function (resolve, reject) {
     const cp = spawn(phantomJsBinPath, [configString, scriptPath].concat(scriptArgs))
-
-    // for testing
-    let stdOut = ''
     let stdErr = ''
-    cp.stdout.on('data', function (data) {
-      stdOut += data
-    })
 
     cp.stderr.on('data', function (data) {
       stdErr += data
@@ -51,13 +45,19 @@ export default function ({ css, url, width, height, dist, fileName }) {
         }
         reject(new Error(errorMsg))
         return
+      } else {
+        resolve()
       }
-      resolve()
+      // need to clean up after ourselves; can't rely on that the parent process will be terminated any time soon.
+      process.removeListener('SIGTERM', sigtermHandler)
+      cp.kill('SIGTERM')
     })
 
-    process.on('SIGTERM', function () {
+    function sigtermHandler () {
       cp.kill('SIGTERM')
       process.exit(1)
-    })
+    }
+
+    process.on('SIGTERM', sigtermHandler)
   })
 }

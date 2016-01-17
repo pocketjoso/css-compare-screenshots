@@ -1,6 +1,6 @@
 {
   "name": "css-compare-screenshots",
-  "version": "0.0.10",
+  "version": "0.0.11",
   "description": "Generates comparision screenshots before/after modifying css. Use for regression testing.",
   "main": "lib/index.js",
   "scripts": {

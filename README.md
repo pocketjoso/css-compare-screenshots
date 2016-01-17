@@ -10,7 +10,7 @@ Uses `phantomjs` do the page rendering.
 ```
 import compareScreenshots from 'css-compare-screenshots' // or require, if you're not using ES6 yet
 
-generateScreenshots({
+compareScreenshots({
   url: 'http://trello.com', // or local html file
   css: 'body { color: red }',
   width: 1300,

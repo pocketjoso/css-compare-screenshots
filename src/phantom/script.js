@@ -109,8 +109,7 @@ function generateAfterScreenshot (options) {
 
   setTimeout(function () {
     window.callPhantom({
-      status: options.STATUS_INLINED_CSS_DONE,
-      html: document.documentElement.innerHTML
+      status: options.STATUS_INLINED_CSS_DONE
     })
   }, options.renderDelay)
 }
@@ -131,9 +130,6 @@ page.onResourceRequested = function (requestData, request) {
 }
 
 page.onCallback = function (data) {
-  if (data.html) {
-    system.stdout.write(data.html)
-  }
   if (data.status === STATUS_INLINED_CSS_DONE) {
     renderScreenshot('after')
     phantomExit(0)

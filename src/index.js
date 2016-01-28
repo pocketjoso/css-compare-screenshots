@@ -4,7 +4,7 @@ import { spawn } from 'child_process'
 
 import prepareCss from './prepareCss'
 
-import phantomjs from 'phantomjs'
+import phantomjs from 'phantomjs-prebuilt'
 const phantomJsBinPath = phantomjs.path
 const scriptPath = path.join(__dirname, './phantom/script.js')
 const configPath = path.join(__dirname, './phantom/config.json')

@@ -7,6 +7,9 @@ function isExternalFontface (rule, urlHostname) {
   rule.declarations.forEach(function (declaration) {
     if (declaration.property === 'src') {
       let matches = declaration.value.match(/url\(([^)]*)\)/)
+      if (!matches || matches.length < 2) {
+        return
+      }
       let urlPath = matches[1]
       let parsedUrl = url.parse(urlPath)
       if (parsedUrl.hostname && parsedUrl.hostname !== urlHostname) {

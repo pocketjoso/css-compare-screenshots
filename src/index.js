@@ -9,6 +9,8 @@ const phantomJsBinPath = phantomjs.path
 const scriptPath = path.join(__dirname, './phantom/script.js')
 const configPath = path.join(__dirname, './phantom/config.json')
 
+const DEFAULT_TIMEOUT = 15000
+
 export default function ({ css, url, width, height, dist, fileName }) {
   let configString = '--config=' + configPath
   let { css: preparedCss, externalFontface, error } = prepareCss(css, url)
@@ -29,6 +31,8 @@ export default function ({ css, url, width, height, dist, fileName }) {
     externalFontface
   ].concat(cssChunks)
 
+  let hasTimedOut = false
+
   return new Promise(function (resolve, reject) {
     const cp = spawn(phantomJsBinPath, [configString, scriptPath].concat(scriptArgs))
     let stdErr = ''
@@ -37,14 +41,22 @@ export default function ({ css, url, width, height, dist, fileName }) {
       stdErr += data
     })
 
+    // kill after timeout
+    const killTimeout = setTimeout(function () {
+      hasTimedOut = true
+      cp.kill('SIGTERM')
+    }, DEFAULT_TIMEOUT)
+
     cp.on('exit', function (code) {
-      if (code === 1 || stdErr.indexOf('PhantomJS has crashed') > -1) {
-        let errorMsg = 'Error in generateScreenshots'
+      if (hasTimedOut || code === 1 || stdErr.indexOf('PhantomJS has crashed') > -1) {
+        let errorMsg = 'css-compare-screenshots error'
+        if (hasTimedOut) {
+          errorMsg += ': PhantomJS process timed out after ' + DEFAULT_TIMEOUT / 1000 + 's.'
+        }
         if (stdErr.length > 0) {
           errorMsg += ': ' + stdErr
         }
-        reject(new Error(errorMsg))
-        return
+        return reject(new Error(errorMsg))
       } else {
         resolve()
       }
@@ -53,11 +65,14 @@ export default function ({ css, url, width, height, dist, fileName }) {
       cp.kill('SIGTERM')
     })
 
+    function exitHandler () {
+      cp.kill('SIGTERM')
+    }
     function sigtermHandler () {
       cp.kill('SIGTERM')
       process.exit(1)
     }
-
+    process.on('exit', exitHandler)
     process.on('SIGTERM', sigtermHandler)
   })
 }

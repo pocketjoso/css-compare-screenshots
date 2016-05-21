@@ -11,8 +11,9 @@ const configPath = path.join(__dirname, './phantom/config.json')
 
 const DEFAULT_TIMEOUT = 15000
 
-export default function ({ css, url, width, height, dist, fileName }) {
-  let configString = '--config=' + configPath
+export default function ({ css, url, width, height, dist, fileName, timeout = DEFAULT_TIMEOUT }) {
+  const timeoutWait = timeout
+  const configString = '--config=' + configPath
   let { css: preparedCss, externalFontface, error } = prepareCss(css, url)
   if (error) {
     console.log('prepareCss error', error)
@@ -21,8 +22,8 @@ export default function ({ css, url, width, height, dist, fileName }) {
 
   // TODO: research actual limit for individual args where phantomjs(?) bails (~22000 on this laptop)
   // TODO: how to use const instead of hardcoded 15000 below?
-  let cssChunks = preparedCss.match(/[\s\S]{1,15000}/g)
-  let scriptArgs = [
+  const cssChunks = preparedCss.match(/[\s\S]{1,15000}/g)
+  const scriptArgs = [
     url,
     width,
     height,
@@ -40,18 +41,19 @@ export default function ({ css, url, width, height, dist, fileName }) {
     cp.stderr.on('data', function (data) {
       stdErr += data
     })
+    console.log('\n\n\ntimeoutWait\n\n\n', timeoutWait)
 
     // kill after timeout
     const killTimeout = setTimeout(function () {
       hasTimedOut = true
       cp.kill('SIGTERM')
-    }, DEFAULT_TIMEOUT)
+    }, timeoutWait)
 
     cp.on('exit', function (code) {
       if (hasTimedOut || code === 1 || stdErr.indexOf('PhantomJS has crashed') > -1) {
         let errorMsg = 'css-compare-screenshots error'
         if (hasTimedOut) {
-          errorMsg += ': PhantomJS process timed out after ' + DEFAULT_TIMEOUT / 1000 + 's.'
+          errorMsg += ': PhantomJS process timed out after ' + timeoutWait / 1000 + 's.'
         }
         if (stdErr.length > 0) {
           errorMsg += ': ' + stdErr

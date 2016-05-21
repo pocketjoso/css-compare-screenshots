@@ -41,7 +41,6 @@ export default function ({ css, url, width, height, dist, fileName, timeout = DE
     cp.stderr.on('data', function (data) {
       stdErr += data
     })
-    console.log('\n\n\ntimeoutWait\n\n\n', timeoutWait)
 
     // kill after timeout
     const killTimeout = setTimeout(function () {

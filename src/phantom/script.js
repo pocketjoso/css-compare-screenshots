@@ -115,6 +115,8 @@ function generateAfterScreenshot (options) {
   }, options.renderDelay)
 }
 
+page.settings.userAgent = userAgent
+
 page.onError = function (msg, trace) {
 	// do nothing
 }

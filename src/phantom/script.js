@@ -14,7 +14,8 @@ var height = args[3]
 var screenshotDist = args[4]
 var fileName = args[5]
 var externalFontface = args[6]
-var css = args.slice(7).join('')
+var userAgent = args[7]
+var css = args.slice(8).join('')
 
 // discard stdout from phantom exit
 function phantomExit (code) {

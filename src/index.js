@@ -10,8 +10,13 @@ const scriptPath = path.join(__dirname, './phantom/script.js')
 const configPath = path.join(__dirname, './phantom/config.json')
 
 const DEFAULT_TIMEOUT = 15000
+const DEFAULT_USER_AGENT = 'css-compare-screenshots Penthouse module'
 
-export default function ({ css, url, width, height, dist, fileName, timeout = DEFAULT_TIMEOUT }) {
+export default function ({
+  css, url, width, height, dist, fileName,
+  timeout = DEFAULT_TIMEOUT,
+  userAgent = DEFAULT_USER_AGENT
+}) {
   const timeoutWait = timeout
   const configString = '--config=' + configPath
   let { css: preparedCss, externalFontface, error } = prepareCss(css, url)
@@ -29,7 +34,8 @@ export default function ({ css, url, width, height, dist, fileName, timeout = DE
     height,
     dist,
     fileName,
-    externalFontface
+    externalFontface,
+    userAgent
   ].concat(cssChunks)
 
   let hasTimedOut = false

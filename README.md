@@ -17,6 +17,10 @@ compareScreenshots({
   height: 900,
   dist: 'comparisons/',
   fileName: 'homepage' // will generate 'homepage-before' and 'homepage-after'
+
+  // optional
+  timeout: 150000, // ms
+  userAgent: 'css-compare-screenshots Penthouse module'
 }).then(function () {
   // done!
 })
